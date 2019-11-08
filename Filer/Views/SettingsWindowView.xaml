@@ -1,0 +1,300 @@
+﻿<Window x:Class="Filer.Views.SettingsWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Filer.Views"
+        mc:Ignorable="d"
+        Title="Filer Settings" Height="450" Width="800" 
+        Padding="0"
+        WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/LightTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Background" Value="{StaticResource Settings_WindowTabBrush}"/>
+            <Setter Property="Icon" Value="{StaticResource Icon_Settings}"/>
+        </Style>
+    </Window.Style>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="152"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.RowSpan="2" Grid.ColumnSpan="2" TabStripPlacement="Left" BorderThickness="0" Padding="0" Margin="0" ItemContainerStyle="{StaticResource Settings_TabItem}">
+            <TabItem Name="GeneralSettingsTab" Header="General">
+                <TabItem.Content>
+                    <Grid Background="{StaticResource Settings_WindowMainBrush}">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="Position &amp; Size" Style="{StaticResource Settings_HeaderStyle}"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Allow Search Window To Be Repositioned" FontSize="14"
+                                                  IsChecked="{Binding Settings.AllowRepositioning}"/>
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Remember Last Position" FontSize="14"
+                                                  IsChecked="{Binding Settings.RememberPosition}"/>
+                                </StackPanel>
+                                <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Follow Mouse" FontSize="14"
+                                              IsChecked="{Binding Settings.FollowMouse}"/>
+
+                                <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Always On Top" FontSize="14"
+                                              IsChecked="{Binding Settings.Topmost}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1">
+                                <TextBlock Text="Miscellanious" Style="{StaticResource Settings_HeaderStyle}"/>
+
+                                <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Start With Windows" FontSize="14"
+                                              IsChecked="{Binding Settings.StartWithWindows}" Command="{Binding ToggleStartWithWindowsCommand}"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Start Minimized" FontSize="14"
+                                              IsChecked="{Binding Settings.StartMinimized}"/>
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Minimize Instead Of Closing" FontSize="14"
+                                              IsChecked="{Binding Settings.MinimizeOnClose}"/>
+                                </StackPanel>
+
+                                <TextBlock Text="After Each Search..." Style="{StaticResource Settings_SubHeaderStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Clear The Search Bar" FontSize="14"
+                                              IsChecked="{Binding Settings.ClearOnSearch}"/>
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Hide The Search Window" FontSize="14"
+                                              IsChecked="{Binding Settings.HideOnSearch}"/>
+                                </StackPanel>
+
+                                <TextBlock Text="When Focus Has Been Lost..." Style="{StaticResource Settings_SubHeaderStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Clear The Search Bar" FontSize="14"
+                                              IsChecked="{Binding Settings.ClearOnHide}"/>
+                                    <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Hide The Search Window" FontSize="14"
+                                              IsChecked="{Binding Settings.MinimizeOnFocusLost}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                        </Grid>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Name="DirectorySettingsTab" Header="Directories">
+                <TabItem.Content>
+                    <Grid Background="{StaticResource Settings_WindowMainBrush}">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Active Directories" Style="{StaticResource Settings_HeaderStyle}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding CacheSizeLabel}" FontSize="13"
+                                       FontWeight="Normal" Margin="0 0 5 0"/>
+
+                            <ListView x:Name="DirectoryList" Grid.Row="1" Margin="0 0 0 5" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ItemsSource="{Binding DirectoryMonitor.MonitoredDirectories}" ScrollViewer.CanContentScroll="False">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Directory" Width="390">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="Background" Value="{StaticResource Settings_WindowMainBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource Settings_TextMainBrush}"/>
+                                                    <Setter Property="FontSize" Value="14"/>
+                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock x:Name="DirectoryTextBox" Text="{Binding Path}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               FontSize="13"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Recursive" Width="70">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="Background" Value="{StaticResource Settings_WindowMainBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource Settings_TextMainBrush}"/>
+                                                    <Setter Property="FontSize" Value="14"/>
+                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ToggleButton IsChecked="{Binding RecursiveSearch}" Style="{StaticResource Settings_ListViewCheckButton}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Subitems" Width="70">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="Background" Value="{StaticResource Settings_WindowMainBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource Settings_TextMainBrush}"/>
+                                                    <Setter Property="FontSize" Value="14"/>
+                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock x:Name="FileCountTextBox" Text="{Binding SubItemCount}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               FontSize="13"/>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding SubItemCount}" Value="-1">
+                                                            <Setter TargetName="FileCountTextBox" Property="Text" Value="?"/>
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Status" Width="80">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="Background" Value="{StaticResource Settings_WindowMainBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource Settings_TextMainBrush}"/>
+                                                    <Setter Property="FontSize" Value="14"/>
+                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock x:Name="StatusTextBox" Text="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               FontSize="13"/>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Scanning">
+                                                            <Setter TargetName="StatusTextBox" Property="Foreground" Value="{StaticResource Settings_DirScanScanningBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                            <Setter TargetName="StatusTextBox" Property="Foreground" Value="{StaticResource Settings_DirScanPendingBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Locked">
+                                                            <Setter TargetName="StatusTextBox" Property="Foreground" Value="{StaticResource Settings_DirScanLockedBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Active">
+                                                            <Setter TargetName="StatusTextBox" Property="Foreground" Value="{StaticResource Settings_DirScanActiveBrush}"/>
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                            <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                                <Button Command="{Binding AddDirectoryCommand}" Style="{StaticResource Settings_AddDirectoryButton}"/>
+                                <Button Height="25" Width="100" Command="{Binding RemoveDirectoryCommand}" CommandParameter="{Binding ElementName=DirectoryList, Path=SelectedItems}">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Settings_RemoveDirectoryButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=DirectoryList, Path=SelectedIndex}" Value="-1">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+
+                            <Button Grid.Column="0" Grid.Row="2" Command="{Binding ScanDirectoriesCommand}" CommandParameter="{Binding ElementName=DirectoryList, Path=SelectedItems}">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Settings_BaseButton}">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=DirectoryList, Path=SelectedIndex}" Value="-1">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Name="SearchSettingsTab" Header="Search">
+                <TabItem.Content>
+                    <Grid Background="{StaticResource Settings_WindowMainBrush}">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="Search Results" Style="{StaticResource Settings_HeaderStyle}"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Number Of Results To Display" Style="{StaticResource Settings_Text}" Margin="15 0 10 0"/>
+                                    <ComboBox ItemsSource="{Binding RestrictedResultCountList}" SelectedValue="{Binding Settings.MaxResultsDisplayed}" Height="24"
+                                              VerticalAlignment="Top"/>
+
+                                </StackPanel>
+
+                                <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Re-sort Search Results If A File Changes" FontSize="14"
+                                                  IsChecked="{Binding Settings.SortImmediatelyOnFileChange}"/>
+                                <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Require Wildcard (*) To Find Results That Do Not Begin With The Search Query" FontSize="14"
+                                                  IsChecked="{Binding Settings.RequireWildcard}"/>
+
+                                <TextBlock Text="Filters" Style="{StaticResource Settings_HeaderStyle}"/>
+
+                                <ToggleButton Style="{StaticResource Settings_CheckButton}" Tag="Exclude Certain File Extensions From Being Scanned Or Searched For" FontSize="14"
+                                                  IsChecked="{Binding Settings.ExcludeCertainExtensions}"/>
+                                <TextBlock Text="File extensions to be excluded, separated by a semi-colon (e.g. txt;exe;mp4):" Style="{StaticResource Settings_SubHeaderStyle}"/>
+                                <TextBox x:Name="ExcludedExtensions" Margin="10 5 10 5" Text="{Binding Settings.ExcludedExtensions, UpdateSourceTrigger=PropertyChanged}" 
+                                         IsEnabled="{Binding Settings.ExcludeCertainExtensions}" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" Width="150" VerticalAlignment="Bottom">
+            <TextBlock Text="Filer 0.5.5" FontSize="12" Foreground="{StaticResource Settings_WindowMainBrush}" HorizontalAlignment="Center"/>
+            <ToggleButton x:Name="DebugToggle" Content="Debug Log" FontSize="8" Width="60" Background="Transparent" BorderBrush="{x:Null}"
+                Foreground="{StaticResource Settings_WindowMainBrush}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=DebugToggle, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <TextBox Text="{Binding Settings.SessionLog}" FontSize="12" IsReadOnly="True"/>
+        </Grid>
+    </Grid>
+</Window>

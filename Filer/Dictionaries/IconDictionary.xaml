@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Filer.Dictionaries">
+
+    <BitmapImage x:Key="Icon_FavoriteOn" UriSource="/Filer;component/Resources/Images/Light/favorite_on.png" />
+    <BitmapImage x:Key="Icon_FavoriteOff" UriSource="/Filer;component/Resources/Images/Light/favorite_off.png" />
+    <BitmapImage x:Key="Icon_Tag" UriSource="/Filer;component/Resources/Images/Light/tag_icon.png" />
+    <BitmapImage x:Key="Icon_Asterisk" UriSource="/Filer;component/Resources/Images/Light/filter_any.png" />
+    <BitmapImage x:Key="Icon_Settings" UriSource="/Filer;component/Resources/Images/Light/settings.png" />
+    <BitmapImage x:Key="Icon_Settings_Hover" UriSource="/Filer;component/Resources/Images/Light/settings_h.png" />
+    <BitmapImage x:Key="Icon_Close" UriSource="/Filer;component/Resources/Images/Light/close.png" />
+    <BitmapImage x:Key="Icon_Close_Hover" UriSource="/Filer;component/Resources/Images/Light/close_h.png" />
+    <BitmapImage x:Key="Icon_Minimize" UriSource="/Filer;component/Resources/Images/Light/minimize.png" />
+    <BitmapImage x:Key="Icon_Minimize_Hover" UriSource="/Filer;component/Resources/Images/Light/minimize_h.png" />
+    <BitmapImage x:Key="Icon_File" UriSource="/Filer;component/Resources/Images/Light/file.png" />
+    <BitmapImage x:Key="Icon_Folder" UriSource="/Filer;component/Resources/Images/Light/folder.png" />
+    <BitmapImage x:Key="Icon_FolderFilter" UriSource="/Filer;component/Resources/Images/Light/filter_folder.png" />
+    <BitmapImage x:Key="Icon_Logo" UriSource="/Filer;component/Resources/Images/Light/filer.png" />
+    <BitmapImage x:Key="Icon_LogoDark" UriSource="/Filer;component/Resources/Images/Light/filer_dark.png" />
+    <BitmapImage x:Key="Icon_Suppress" UriSource="/Filer;component/Resources/Images/Light/suppress.png" />
+    <BitmapImage x:Key="Icon_SuppressOff" UriSource="/Filer;component/Resources/Images/Light/suppress_off.png" />
+    <BitmapImage x:Key="Icon_Search" UriSource="/Filer;component/Resources/Images/Light/search.png" />
+    <BitmapImage x:Key="Icon_Check" UriSource="/Filer;component/Resources/Images/Light/check.png" />
+    <BitmapImage x:Key="Icon_CheckOff" UriSource="/Filer;component/Resources/Images/Light/check_off.png" />
+    <BitmapImage x:Key="Icon_CheckHover" UriSource="/Filer;component/Resources/Images/Light/check_hover.png" />
+
+</ResourceDictionary>

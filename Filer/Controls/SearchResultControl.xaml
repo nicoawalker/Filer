@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="Filer.Controls.SearchResultControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Filer.Controls"
+             xmlns:filer="clr-namespace:Filer"
+             mc:Ignorable="d"
+             x:Name="ControlBase"
+             Focusable="False"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/LightTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <filer:FileTypeToColorConverter x:Key="FileTypeToColorConverter" FileBrush="{StaticResource SearchResult_FileBrush}" DirectoryBrush="{StaticResource SearchResult_DirectoryBrush}" />
+            <filer:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter"/>
+            
+            <Storyboard x:Key="FlashGreen">
+                <ColorAnimation From="Red" To="Green" Duration="0:0:4" Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+            </Storyboard>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border x:Name="ControlBorder" Focusable="False" BorderBrush="{x:Null}">
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+        </Border.Style>
+        <Grid x:Name="LayoutRoot" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Opacity" Value="1.0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SearchResultContent.IsHidden}" Value="True">
+                            <Setter Property="Opacity" Value="0.6"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            
+            <!--Search result context menu on right click-->
+            <Grid.ContextMenu>
+                <ContextMenu StaysOpen="False" Background="White" Foreground="{StaticResource Global_ForegroundBrush}" BorderBrush="{StaticResource Global_ForegroundBrush}" Focusable="False">
+                    <ContextMenu.Template>
+                        <ControlTemplate TargetType="{x:Type ContextMenu}">
+                            <Border Background="#f8f6f2" BorderBrush="{StaticResource Global_ForegroundBrush}" BorderThickness="1" Focusable="False">
+                                <StackPanel IsItemsHost="True" Focusable="False" />
+                            </Border>
+                        </ControlTemplate>
+                    </ContextMenu.Template>
+                    <MenuItem Click="FavoriteMenuItem_Click" Focusable="False">
+                        <MenuItem.Style>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <StackPanel x:Name="MenuPanel" Orientation="Horizontal" Width="160" Height="35" Background="Transparent" Focusable="False">
+                                                <Image x:Name="MenuItemImage" Source="{StaticResource Icon_FavoriteOn}" Margin="10 8 15 8" VerticalAlignment="Center" Focusable="False" />
+                                                <TextBlock x:Name="MenuItemLabel" Text="Favorite" VerticalAlignment="Center" FontSize="14" FontWeight="DemiBold" Foreground="{StaticResource Global_ForegroundBrush}" Focusable="False"/>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="MenuPanel" Property="Background" Value="#e9e3d6"/>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding SearchResultContent.IsFavorite}" Value="True">
+                                                    <Setter TargetName="MenuItemLabel" Property="Text" Value="Unfavorite"/>
+                                                    <Setter TargetName="MenuItemImage" Property="Source" Value="{StaticResource Icon_FavoriteOff}"/>
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
+                    <MenuItem Click="HideMenuItem_Click" Focusable="False">
+                        <MenuItem.Style>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <StackPanel x:Name="MenuPanel" Orientation="Horizontal" Width="160" Height="35" Background="Transparent" Focusable="False">
+                                                <Image x:Name="MenuItemImage" Source="{StaticResource Icon_Suppress}" Margin="10 8 15 8" VerticalAlignment="Center" Focusable="False" />
+                                                <TextBlock x:Name="MenuItemLabel" Text="Suppress" VerticalAlignment="Center" FontSize="14" FontWeight="DemiBold" Foreground="{StaticResource Global_ForegroundBrush}" Focusable="False"/>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="MenuPanel" Property="Background" Value="#e9e3d6"/>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding SearchResultContent.IsHidden}" Value="True">
+                                                    <Setter TargetName="MenuItemLabel" Property="Text" Value="Unsuppress"/>
+                                                    <Setter TargetName="MenuItemImage" Property="Source" Value="{StaticResource Icon_SuppressOff}"/>
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
+                </ContextMenu>
+            </Grid.ContextMenu>
+
+            <!--file icon-->
+            <Image Source="{Binding SearchResultContent.FileIcon, Converter={StaticResource BitmapToImageSourceConverter}}" Grid.Column="0" Grid.Row="0" Focusable="False" Margin="5"/>
+
+            <!--favorite toggle icon-->
+            <Image x:Name="FavIcon" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="12" 
+                   Margin="2" Focusable="False" ToolTip="Favorited" Source="{StaticResource Icon_FavoriteOn}">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SearchResultContent.IsFavorite}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <!--Access count display-->
+            <Border x:Name="AccessCountIndicator" Grid.Row="0" Grid.Column="0" Focusable="False" Background="#f0a442" HorizontalAlignment="Right" 
+                    VerticalAlignment="Bottom" Padding="3 0" Margin="0 0 4 2" Visibility="Collapsed">
+                <TextBlock Text="{Binding SearchResultContent.AccessCount}" Foreground="White" FontSize="8" FontWeight="Medium" Focusable="False" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+
+
+            <!--file path-->
+            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Focusable="False">
+                <TextBlock Text="{Binding SearchResultContent.Name}" FontSize="14" Focusable="False" TextTrimming="CharacterEllipsis" Foreground="{Binding SearchResultContent.Type, Converter={StaticResource FileTypeToColorConverter}}"
+                           FontWeight="Normal"/>
+                <TextBlock x:Name="FilePathBox" Text="{Binding SearchResultContent.Path}" FontSize="11" Foreground="{StaticResource SearchResult_PathBrush}" Focusable="False" 
+                           ToolTip="{Binding SearchResultContent.Path}" TextTrimming="CharacterEllipsis" FontWeight="Light">
+                    <TextBlock.Resources>
+                        <Style TargetType="{x:Type ToolTip}">
+                            <Setter Property="Background" Value="#f8f6f2"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Global_ForegroundBrush}"/>
+                        </Style>
+                    </TextBlock.Resources>
+                </TextBlock>
+            </StackPanel>
+
+            <TextBlock Text="{Binding SearchResultContent.Tags}" FontSize="12"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Focusable="False"/>
+        </Grid>
+    </Border>
+    
+</UserControl>
