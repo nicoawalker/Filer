@@ -17,3 +17,7 @@ Filer is a lightweight file and folder search tool and launcher for Windows. Wit
 
 #### Installation
 Filer is a fully portable application so no installation is required. Simply extract the program files to a folder and run the executable.
+
+#### Requirements
+* Windows 7+
+* Microsoft .NET Framework 4.5 or greater
