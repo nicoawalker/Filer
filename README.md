@@ -1,4 +1,4 @@
-![alt text](http://nicowalker.com/Images/filer1.png "Filer Search Window")
+![alt text](http://nicowalker.com/Images/filer_search.png "Filer Search Window")
 
 ## About
 Filer is a lightweight file and folder search tool and launcher for Windows. With a focus on making searches easy and the prioritization of relevant search results, it is capable of quickly indexing and searching for any files folders on the system.
